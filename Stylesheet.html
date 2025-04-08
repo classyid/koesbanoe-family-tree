@@ -1,0 +1,105 @@
+<style>
+  /* Custom styling untuk aplikasi */
+  
+  /* Styling untuk tab navigasi */
+  .nav-link {
+    @apply text-blue-100 hover:text-white transition duration-200 block md:inline-block;
+  }
+  
+  .nav-link.active {
+    @apply text-white font-bold border-b-2 border-white;
+  }
+  
+  /* Styling untuk card */
+  .card {
+    @apply bg-white rounded-lg shadow p-4 hover:shadow-md transition;
+  }
+  
+  /* Styling untuk silsilah keluarga */
+  .family-tree-visualization {
+    @apply p-4;
+  }
+  
+  .tree-visualization {
+    @apply flex flex-col items-center;
+  }
+  
+  .tree-node {
+    @apply flex flex-col items-center relative my-4;
+  }
+  
+  .node-card {
+    @apply px-4 py-2 min-w-40 text-center;
+  }
+  
+  .node-children {
+    @apply flex flex-row justify-center items-start pt-6 mt-2 relative;
+  }
+  
+  .node-children::before {
+    content: '';
+    @apply absolute top-0 left-1/2 w-px h-6 bg-gray-400;
+    transform: translateX(-50%);
+  }
+  
+  .node-children .tree-node {
+    @apply mx-4 relative;
+  }
+  
+  .node-children .tree-node::before {
+    content: '';
+    @apply absolute top-[-24px] left-1/2 w-px h-6 bg-gray-400;
+    transform: translateX(-50%);
+  }
+  
+  .node-children .tree-node:not(:first-child)::after {
+    content: '';
+    @apply absolute top-[-24px] left-[-100%] right-[-100%] h-px bg-gray-400;
+  }
+  
+  /* Styling untuk suggestions */
+  #name-suggestions {
+    @apply bg-white border border-gray-300 rounded-lg shadow-md absolute w-full z-10 mt-1 max-h-60 overflow-y-auto;
+  }
+  
+  #name-suggestions div {
+    @apply p-2 cursor-pointer hover:bg-gray-100;
+  }
+  
+  /* Styling untuk mobile responsiveness */
+  @media (max-width: 768px) {
+    .node-children {
+      @apply flex-col;
+    }
+    
+    .node-children .tree-node:not(:first-child)::after {
+      display: none;
+    }
+    
+    .node-children .tree-node {
+      @apply my-8 mx-0;
+    }
+    
+    .node-card {
+      @apply min-w-64;
+    }
+  }
+  
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    @apply bg-gray-200 rounded;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    @apply bg-blue-400 rounded;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-blue-500;
+  }
+</style>

@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Font Awesome CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <!-- Include stylesheet -->
+  <?!= include('Stylesheet'); ?>
+</head>
+<body class="bg-gray-100 min-h-screen">
+  <!-- Navbar -->
+  <nav class="bg-blue-800 text-white shadow-lg sticky top-0 z-10">
+    <div class="container mx-auto px-4 py-3">
+      <div class="flex justify-between items-center">
+        <div class="flex items-center">
+          <i class="fas fa-sitemap text-xl mr-2"></i>
+          <h1 class="text-xl font-bold">Silsilah M. Koesbanoe</h1>
+        </div>
+        <button id="mobile-menu-button" class="md:hidden focus:outline-none">
+          <i class="fas fa-bars text-xl"></i>
+        </button>
+      </div>
+      <div id="mobile-menu" class="hidden md:block mt-3 md:mt-0">
+        <ul class="md:flex md:space-x-6 pb-3 md:pb-0">
+          <li class="py-2 md:py-0"><a href="#" class="nav-link active" data-target="section-search"><i class="fas fa-search mr-2"></i>Pencarian</a></li>
+          <li class="py-2 md:py-0"><a href="#" class="nav-link" data-target="section-family-tree"><i class="fas fa-tree mr-2"></i>Silsilah</a></li>
+          <li class="py-2 md:py-0"><a href="#" class="nav-link" data-target="section-generations"><i class="fas fa-users mr-2"></i>Generasi</a></li>
+          <li class="py-2 md:py-0"><a href="#" class="nav-link" data-target="section-admin"><i class="fas fa-key mr-2"></i>Admin</a></li>
+          <li class="py-2 md:py-0"><a href="#" class="nav-link" data-target="section-about"><i class="fas fa-info-circle mr-2"></i>Tentang</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="container mx-auto px-4 py-6">
+    <!-- Loading Indicator -->
+    <div id="loading-indicator" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div class="bg-white p-5 rounded-lg flex items-center space-x-3">
+        <i class="fas fa-spinner fa-spin text-blue-600 text-xl"></i>
+        <span>Memuat data...</span>
+      </div>
+    </div>
+
+    <!-- Alert Message -->
+    <div id="alert-message" class="hidden mb-4"></div>
+
+    <!-- Search Section -->
+    <section id="section-search" class="main-section mb-8">
+      <div class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-2xl font-bold mb-4 text-gray-800">Pencarian Data Keluarga</h2>
+        
+        <div class="mb-6">
+          <div class="flex flex-col md:flex-row gap-3">
+            <div class="flex-grow">
+              <input type="text" id="search-query" placeholder="Masukkan kata kunci pencarian..." 
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div class="md:w-1/4">
+              <select id="search-field" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="">Semua Field</option>
+                <option value="nama">Nama</option>
+                <option value="alamat">Alamat</option>
+                <option value="orangTua">Orang Tua</option>
+                <option value="generasi">Generasi</option>
+              </select>
+            </div>
+            <div>
+              <button id="search-button" class="w-full md:w-auto px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                <i class="fas fa-search mr-2"></i>Cari
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <div id="search-results" class="mt-4">
+          <!-- Search results will be populated here -->
+          <div class="text-gray-500 text-center py-8">
+            <i class="fas fa-search text-gray-300 text-5xl mb-3"></i>
+            <p>Hasil pencarian akan ditampilkan di sini</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Family Tree Section -->
+    <section id="section-family-tree" class="main-section mb-8 hidden">
+      <div class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-2xl font-bold mb-4 text-gray-800">Silsilah Keluarga</h2>
+        
+        <div class="mb-6">
+          <div class="flex flex-col md:flex-row gap-3">
+            <div class="flex-grow relative">
+              <input type="text" id="family-name" placeholder="Masukkan nama anggota keluarga..." 
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <!-- Tambahan: Container untuk saran nama -->
+              <div id="name-suggestions" class="hidden"></div>
+            </div>
+            <div class="md:w-1/4">
+              <select id="generations-count" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="1">1 Generasi</option>
+                <option value="2">2 Generasi</option>
+                <option value="3" selected>3 Generasi</option>
+                <option value="4">4 Generasi</option>
+                <option value="5">5 Generasi</option>
+              </select>
+            </div>
+            <div>
+              <button id="view-tree-button" class="w-full md:w-auto px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                <i class="fas fa-sitemap mr-2"></i>Lihat Silsilah
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <div id="family-tree-container" class="mt-4">
+          <!-- Family tree will be displayed here -->
+          <div class="text-gray-500 text-center py-8">
+            <i class="fas fa-tree text-gray-300 text-5xl mb-3"></i>
+            <p>Silsilah keluarga akan ditampilkan di sini</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Generations Section -->
+    <section id="section-generations" class="main-section mb-8 hidden">
+      <div class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-2xl font-bold mb-4 text-gray-800">Daftar Generasi</h2>
+        
+        <div id="generations-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <!-- Generations list will be populated here -->
+          <div class="col-span-full text-gray-500 text-center py-8">
+            <i class="fas fa-users text-gray-300 text-5xl mb-3"></i>
+            <p>Memuat daftar generasi...</p>
+          </div>
+        </div>
+        
+        <div id="generation-details" class="mt-8 hidden">
+          <h3 class="text-xl font-bold text-gray-800 mb-3">Anggota Generasi: <span id="selected-generation"></span></h3>
+          <div id="generation-members" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <!-- Generation members will be populated here -->
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Admin Section -->
+    <section id="section-admin" class="main-section mb-8 hidden">
+      <div class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-2xl font-bold mb-4 text-gray-800">Admin Panel - Generate API Key</h2>
+        
+        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6">
+          <div class="flex">
+            <div class="flex-shrink-0">
+              <i class="fas fa-exclamation-triangle text-yellow-400"></i>
+            </div>
+            <div class="ml-3">
+              <p class="text-sm text-yellow-700">
+                Area ini hanya untuk administrator. Anda memerlukan admin key untuk membuat API key baru.
+              </p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="space-y-4">
+          <div>
+            <label for="admin-key" class="block text-sm font-medium text-gray-700 mb-1">Admin Key</label>
+            <input type="password" id="admin-key" placeholder="Masukkan admin key" 
+                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+          </div>
+          
+          <div>
+            <label for="user-name" class="block text-sm font-medium text-gray-700 mb-1">Nama Pengguna</label>
+            <input type="text" id="user-name" placeholder="Masukkan nama pengguna" 
+                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+          </div>
+          
+          <div>
+            <label for="user-email" class="block text-sm font-medium text-gray-700 mb-1">Email Pengguna</label>
+            <input type="email" id="user-email" placeholder="Masukkan email pengguna" 
+                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+          </div>
+          
+          <div class="pt-4">
+            <button id="generate-api-key-button" class="w-full md:w-auto px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+              <i class="fas fa-key mr-2"></i>Generate API Key
+            </button>
+          </div>
+        </div>
+        
+        <div id="api-key-result" class="mt-6 hidden">
+          <div class="border-t border-gray-200 pt-4">
+            <h3 class="text-lg font-medium text-gray-900 mb-2">API Key Baru</h3>
+            <div class="bg-gray-100 p-4 rounded-lg flex items-center">
+              <code id="new-api-key" class="text-sm font-mono text-gray-800 flex-grow"></code>
+              <button id="copy-api-key" class="ml-2 text-gray-500 hover:text-gray-700 focus:outline-none" title="Salin ke clipboard">
+                <i class="fas fa-copy"></i>
+              </button>
+            </div>
+            <p class="text-sm text-gray-500 mt-2">
+              Simpan API key ini dengan aman. Key ini diperlukan untuk mengakses API.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- About Section -->
+    <section id="section-about" class="main-section mb-8 hidden">
+      <div class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-2xl font-bold mb-4 text-gray-800">Tentang Aplikasi</h2>
+        
+        <div class="space-y-6">
+          <div>
+            <h3 class="text-xl font-bold text-gray-700 mb-2">Silsilah Keluarga M. Koesbanoe</h3>
+            <p class="text-gray-600">
+              Aplikasi ini dibuat untuk menelusuri dan mempelajari silsilah keluarga besar M. Koesbanoe. 
+              Data yang ditampilkan mencakup beberapa generasi yang telah dikumpulkan dan diverifikasi.
+            </p>
+          </div>
+          
+          <div>
+            <h3 class="text-xl font-bold text-gray-700 mb-2">Fitur Aplikasi</h3>
+            <ul class="list-disc pl-6 text-gray-600 space-y-1">
+              <li>Pencarian data anggota keluarga</li>
+              <li>Visualisasi silsilah keluarga</li>
+              <li>Pengelompokan berdasarkan generasi</li>
+              <li>Detail informasi untuk setiap anggota keluarga</li>
+            </ul>
+          </div>
+          
+          <div>
+            <h3 class="text-xl font-bold text-gray-700 mb-2">Dokumentasi API</h3>
+            <p class="text-gray-600 mb-4">
+              Aplikasi ini menggunakan API Data Keluarga M. Koesbanoe untuk mengakses dan menampilkan data.
+            </p>
+            
+            <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 mb-4">
+              <h4 class="font-bold text-gray-700 mb-3">Struktur API dan Endpoint</h4>
+              
+              <ul class="space-y-4">
+                <li>
+                  <div class="font-semibold text-blue-700">1. Halaman Beranda API</div>
+                  <div class="text-gray-600 mb-1 text-sm">
+                    <code class="bg-gray-200 px-2 py-1 rounded font-mono">https://script.google.com/macros/s/[DEPLOYMENT_ID]/exec?endpoint=home</code>
+                  </div>
+                  <div class="text-gray-600 text-sm">Menampilkan dokumentasi API dalam format HTML.</div>
+                </li>
+                
+                <li>
+                  <div class="font-semibold text-blue-700">2. Pencarian Data</div>
+                  <div class="text-gray-600 mb-1 text-sm">
+                    <code class="bg-gray-200 px-2 py-1 rounded font-mono">https://script.google.com/macros/s/[DEPLOYMENT_ID]/exec?endpoint=search&apikey=[YOUR_API_KEY]&query=[KEYWORD]&field=[FIELD_OPTIONAL]</code>
+                  </div>
+                  <div class="text-sm text-gray-600">
+                    Parameter:
+                    <ul class="list-disc pl-5 mt-1">
+                      <li><code>query</code>: Kata kunci pencarian (wajib)</li>
+                      <li><code>field</code>: Field spesifik yang ingin dicari (opsional)</li>
+                    </ul>
+                  </div>
+                </li>
+                
+                <li>
+                  <div class="font-semibold text-blue-700">3. Ambil Data Berdasarkan ID</div>
+                  <div class="text-gray-600 mb-1 text-sm">
+                    <code class="bg-gray-200 px-2 py-1 rounded font-mono">https://script.google.com/macros/s/[DEPLOYMENT_ID]/exec?endpoint=get&apikey=[YOUR_API_KEY]&id=[ID]</code>
+                  </div>
+                  <div class="text-sm text-gray-600">
+                    Parameter:
+                    <ul class="list-disc pl-5 mt-1">
+                      <li><code>id</code>: ID unik dari data yang ingin diambil (wajib)</li>
+                    </ul>
+                  </div>
+                </li>
+                
+                <li>
+                  <div class="font-semibold text-blue-700">4. Silsilah Keluarga</div>
+                  <div class="text-gray-600 mb-1 text-sm">
+                    <code class="bg-gray-200 px-2 py-1 rounded font-mono">https://script.google.com/macros/s/[DEPLOYMENT_ID]/exec?endpoint=family-tree&apikey=[YOUR_API_KEY]&name=[NAME]&generations=[NUMBER]</code>
+                  </div>
+                  <div class="text-sm text-gray-600">
+                    Parameter:
+                    <ul class="list-disc pl-5 mt-1">
+                      <li><code>name</code>: Nama orang yang menjadi pusat silsilah (wajib)</li>
+                      <li><code>generations</code>: Jumlah generasi yang ingin ditampilkan (opsional - default: 3)</li>
+                    </ul>
+                  </div>
+                </li>
+                
+                <li>
+                  <div class="font-semibold text-blue-700">5. Daftar Generasi</div>
+                  <div class="text-gray-600 mb-1 text-sm">
+                    <code class="bg-gray-200 px-2 py-1 rounded font-mono">https://script.google.com/macros/s/[DEPLOYMENT_ID]/exec?endpoint=generations&apikey=[YOUR_API_KEY]</code>
+                  </div>
+                </li>
+                
+                <li>
+                  <div class="font-semibold text-blue-700">6. Data Berdasarkan Generasi</div>
+                  <div class="text-gray-600 mb-1 text-sm">
+                    <code class="bg-gray-200 px-2 py-1 rounded font-mono">https://script.google.com/macros/s/[DEPLOYMENT_ID]/exec?endpoint=generasi&apikey=[YOUR_API_KEY]&name=[GENERASI_NAME]</code>
+                  </div>
+                  <div class="text-sm text-gray-600">
+                    Parameter:
+                    <ul class="list-disc pl-5 mt-1">
+                      <li><code>name</code>: Nama generasi yang ingin diambil datanya (wajib)</li>
+                    </ul>
+                  </div>
+                </li>
+                
+                <li>
+                  <div class="font-semibold text-blue-700">7. Generate API Key (Admin Only)</div>
+                  <div class="text-gray-600 mb-1 text-sm">
+                    <code class="bg-gray-200 px-2 py-1 rounded font-mono">https://script.google.com/macros/s/[DEPLOYMENT_ID]/exec?endpoint=generate-api-key&admin_key=[ADMIN_KEY]&name=[USER_NAME]&email=[USER_EMAIL]</code>
+                  </div>
+                  <div class="text-sm text-gray-600">
+                    Parameter:
+                    <ul class="list-disc pl-5 mt-1">
+                      <li><code>admin_key</code>: Admin API key (wajib)</li>
+                      <li><code>name</code>: Nama pengguna API key (wajib)</li>
+                      <li><code>email</code>: Email pengguna API key (wajib)</li>
+                    </ul>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            
+            <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 mb-4">
+              <h4 class="font-bold text-gray-700 mb-3">Menggunakan API Key</h4>
+              
+              <div class="mb-3">
+                <div class="font-semibold text-blue-700">Membuat API Key Admin</div>
+                <p class="text-sm text-gray-600 mt-1">
+                  API key admin sudah terdefinisi di kode (ADMIN_KEY). Secara default, nilainya adalah:
+                </p>
+                <div class="bg-gray-200 px-2 py-1 rounded font-mono text-sm mt-1">admin_m_koesbanoe_2025</div>
+              </div>
+              
+              <div>
+                <div class="font-semibold text-blue-700">Membuat API Key untuk Pengguna</div>
+                <p class="text-sm text-gray-600 mt-1">
+                  Gunakan endpoint generate-api-key dengan admin key:
+                </p>
+                <div class="bg-gray-200 px-2 py-1 rounded font-mono text-sm mt-1 mb-1 break-all">
+                  https://script.google.com/macros/s/[DEPLOYMENT_ID]/exec?endpoint=generate-api-key&admin_key=admin_m_koesbanoe_2025&name=Nama Pengguna&email=email@example.com
+                </div>
+                <p class="text-sm text-gray-600 mt-1">
+                  API akan mengembalikan API key baru yang dapat digunakan oleh pengguna.
+                </p>
+              </div>
+            </div>
+            
+            <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+              <h4 class="font-bold text-gray-700 mb-3">Contoh Penggunaan API</h4>
+              
+              <div class="mb-4">
+                <div class="font-semibold text-blue-700">Contoh: Pencarian Anggota Keluarga</div>
+                <p class="text-sm text-gray-600 mt-1">Request:</p>
+                <div class="bg-gray-200 px-2 py-1 rounded font-mono text-sm mt-1 mb-2 break-all">
+                  https://script.google.com/macros/s/[DEPLOYMENT_ID]/exec?endpoint=search&apikey=mk_abcdef123456&query=Budi&field=Nama
+                </div>
+                
+                <p class="text-sm text-gray-600 mt-1">Response:</p>
+                <pre class="bg-gray-200 px-2 py-1 rounded font-mono text-xs mt-1 overflow-x-auto">
+{
+  "status": "success",
+  "data": [
+    {
+      "ID": "a951a2a9-c0b6-4",
+      "Generasi": "Cucu",
+      "Nama": "Budi Santoso",
+      "Status": "hidup",
+      "Pasangan": "Siti Rahayu",
+      "StatusPasangan": "",
+      "OrangTua": "Ahmad Santoso",
+      "Alamat": "Jl. Contoh No. 123, Jakarta",
+      "HP": "628123456789",
+      "Anak": "[\"Rina Santoso\",\"Rudi Santoso\"]"
+    }
+  ],
+  "message": "Ditemukan 1 hasil"
+}
+                </pre>
+              </div>
+              
+              <div>
+                <div class="font-semibold text-blue-700">Contoh: Mengambil Silsilah Keluarga</div>
+                <p class="text-sm text-gray-600 mt-1">Request:</p>
+                <div class="bg-gray-200 px-2 py-1 rounded font-mono text-sm mt-1 mb-2 break-all">
+                  https://script.google.com/macros/s/[DEPLOYMENT_ID]/exec?endpoint=family-tree&apikey=mk_abcdef123456&name=Budi Santoso
+                </div>
+                
+                <p class="text-sm text-gray-600 mt-1">Response (dipersingkat):</p>
+                <pre class="bg-gray-200 px-2 py-1 rounded font-mono text-xs mt-1 overflow-x-auto">
+{
+  "status": "success",
+  "data": {
+    "name": "Budi Santoso",
+    "id": "a951a2a9-c0b6-4",
+    "data": {
+      "status": "hidup",
+      "pasangan": {
+        "name": "Siti Rahayu",
+        "status": "hidup"
+      },
+      "alamat": "Jl. Contoh No. 123, Jakarta",
+      "hp": "628123456789",
+      "generasi": "Cucu"
+    },
+    "children": [
+      /* data anak-anak */
+    ],
+    "parents": {
+      /* data orang tua */
+    }
+  },
+  "message": "Silsilah keluarga berhasil dibuat"
+}
+                </pre>
+              </div>
+            </div>
+          </div>
+          
+          <div class="pt-4 border-t border-gray-200">
+            <p class="text-gray-500 text-sm">
+              © 2025 Silsilah Keluarga M. Koesbanoe. All rights reserved.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+  
+  <!-- Person Detail Modal -->
+  <div id="person-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+    <div class="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+      <div id="person-modal-content">
+        <!-- Modal content will be populated here -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Include JavaScript -->
+  <?!= include('JavaScript'); ?>
+</body>
+</html>

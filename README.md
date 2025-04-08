@@ -2,7 +2,7 @@
 
 A responsive web application for exploring, searching, and visualizing the M. Koesbanoe family genealogy. This application provides an intuitive interface for family members to discover their heritage and connections.
 
-![M. Koesbanoe Family Tree Banner](https://via.placeholder.com/800x400?text=M.+Koesbanoe+Family+Tree)
+![M. Koesbanoe Family Tree Banner](https://blog.classy.id/upload/gambar_berita/44461655a646491a70be459248e16e8e_20250408084743.png)
 
 ## Features
 
